@@ -1,0 +1,6 @@
+{
+	"terminal.integrated.shell.linux": "/bin/bash",
+	"files.exclude": {
+		"**/__pycache__": true
+	}
+}

@@ -1,0 +1,24 @@
+version: '3'
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      # Update this to wherever you want VS Code to mount the folder of your project
+      - ..:/code:cached
+
+      # Forwards the local Docker socket to the container.
+      - /var/run/docker.sock:/var/run/docker-host.sock
+
+    user: vscode
+    # command: sleep infinity 
+    # ports:
+    #   - 8080
+    
+  db:
+    image: postgres:11
+    ports:
+      - 5432
+
