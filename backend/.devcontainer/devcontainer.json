@@ -2,15 +2,20 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.117.1/containers/docker-in-docker-compose
 // If you want to run as a non-root user in the container, see .devcontainer/docker-compose.yml.
 {
-	"name": "Docker in Docker Compose",
+	"name": "WASM Bots Server",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/code",
 	
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/bash"
-	},
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"files.exclude": {
+			"**/__pycache__": true
+		},
+		"python.pythonPath": "/home/vscode/.local/share/virtualenvs/code-_Py8Si6I/bin/python"
+	}
+	,
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
@@ -21,8 +26,8 @@
 	"forwardPorts": [8080],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install -r requirements.txt",
+	"postCreateCommand": "pipenv install --dev",
 
 	// Comment out to connect as root instead.
-	"remoteUser": "vscode"
+	// "remoteUser": "vscode"
 }

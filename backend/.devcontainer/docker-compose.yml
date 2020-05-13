@@ -4,21 +4,21 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-
     volumes:
       # Update this to wherever you want VS Code to mount the folder of your project
-      - ..:/code:cached
-
+      - ..:/code
       # Forwards the local Docker socket to the container.
       - /var/run/docker.sock:/var/run/docker-host.sock
-
-    user: vscode
-    # command: sleep infinity 
-    # ports:
-    #   - 8080
+    ports:
+      - 8080:8080
+    command: sleep infinity
     
   db:
     image: postgres:11
     ports:
-      - 5432
+      - 5432:5432
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+
 

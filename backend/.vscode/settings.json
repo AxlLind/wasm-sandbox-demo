@@ -2,5 +2,6 @@
 	"terminal.integrated.shell.linux": "/bin/bash",
 	"files.exclude": {
 		"**/__pycache__": true
-	}
+	},
+	"python.pythonPath": "/root/.local/share/virtualenvs/code-_Py8Si6I/bin/python"
 }
