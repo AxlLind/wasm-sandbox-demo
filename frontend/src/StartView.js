@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -20,37 +20,49 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+function BotSelector({ title, id, options }) {
+  const [selected, setSelected] = useState('');
+  const classes = useStyles();
+  const labelId = `${id}-label`;
+  return (
+    <FormControl className={classes.formControl}>
+      <InputLabel id={labelId}>{title}</InputLabel>
+      <Select
+        labelId={labelId}
+        id={id}
+        value={selected}
+        onChange={e => setSelected(e.target.value)}
+      >
+        {options.map((option, i) => (
+          <MenuItem value={i} key={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+}
+
 function StartView() {
   const classes = useStyles();
   return (
     <Container maxWidth="md" className={classes.container}>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label1">First Bot</InputLabel>
-        <Select
-          labelId="demo-simple-select-label1"
-          id="demo-simple-select1"
-          onChange={() => {}}
-        >
-          <MenuItem disabled>First Bot</MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label2">Second Bot</InputLabel>
-        <Select
-          labelId="demo-simple-select-label2"
-          id="demo-simple-select2"
-          onChange={() => {}}
-        >
-          <MenuItem disabled>Second Bot</MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
-      <Button variant="contained" color="primary" style={{ marginTop: '2%' }}>
+      <BotSelector
+        title="First Bot"
+        id="first-bot-selector"
+        options={[1, 2, 3]}
+      />
+      <BotSelector
+        title="Second Bot"
+        id="second-bot-selector"
+        options={[1, 2, 3]}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        style={{ marginTop: '2%' }}
+      >
         Play The game
       </Button>
       <br />
