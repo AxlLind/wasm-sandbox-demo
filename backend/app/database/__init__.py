@@ -4,7 +4,6 @@ from sqlalchemy.orm import sessionmaker
 from app import AppConfig
 
 SQLALCHEMY_DATABASE_URL = AppConfig.DATABASE_URL
-print(SQLALCHEMY_DATABASE_URL)
 
 connect_args = {}
 
