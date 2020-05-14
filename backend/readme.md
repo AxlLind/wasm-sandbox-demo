@@ -12,5 +12,5 @@ Simply open the project (the folder `backend`) and vscode will see that this is 
 
 To start the server inside the devcontainer run
 ```sh
-$ uvicorn main:app --host 0.0.0.0 --reload
+$ uvicorn app.main:app --host 0.0.0.0 --reload
 ```
