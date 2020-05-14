@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -20,19 +21,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function BotSelector({ title, id, options }) {
-  const [selected, setSelected] = useState('');
+function BotSelector({ title, options, value, onChange }) {
   const classes = useStyles();
-  const labelId = `${id}-label`;
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel id={labelId}>{title}</InputLabel>
-      <Select
-        labelId={labelId}
-        id={id}
-        value={selected}
-        onChange={e => setSelected(e.target.value)}
-      >
+      <InputLabel>{title}</InputLabel>
+      <Select value={value} onChange={e => onChange(e.target.value)}>
         {options.map((option, i) => (
           <MenuItem value={i} key={option}>
             {option}
@@ -44,17 +38,22 @@ function BotSelector({ title, id, options }) {
 }
 
 function StartView() {
+  const history = useHistory();
   const classes = useStyles();
+  const [botOne, selectBotOne] = useState('');
+  const [botTwo, selectBotTwo] = useState('');
   return (
     <Container maxWidth="md" className={classes.container}>
       <BotSelector
-        title="First Bot"
-        id="first-bot-selector"
+        title="Bot One"
+        value={botOne}
+        onChange={selectBotOne}
         options={[1, 2, 3]}
       />
       <BotSelector
-        title="Second Bot"
-        id="second-bot-selector"
+        title="Bot Two"
+        value={botTwo}
+        onChange={selectBotTwo}
         options={[1, 2, 3]}
       />
       <Button
@@ -62,6 +61,7 @@ function StartView() {
         color="primary"
         size="large"
         style={{ marginTop: '2%' }}
+        onClick={() => history.push('/play', { botOne, botTwo })}
       >
         Play The game
       </Button>
