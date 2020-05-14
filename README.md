@@ -1,7 +1,7 @@
 # wasm-sandbox-demo
 
 
-# Deploy to heroku
+Deploy to heroku
 ```sh
 $ ./heroku-deploy.sh
 ```
