@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import { Box } from './Box';
-import './Board.css';
+import './Styling.css';
 
 const winningCombinations = [
     [0, 1, 2],
@@ -105,4 +105,4 @@ class Board extends Component {
     }
 }
 
-export default withTheme(Board);
+export default Board;
