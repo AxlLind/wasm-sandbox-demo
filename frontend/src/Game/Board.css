@@ -1,0 +1,8 @@
+.board-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.board {
+    width: 250px;
+}

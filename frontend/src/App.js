@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import CssBaseLine from '@material-ui/core/CssBaseLine';
+import CssBaseLine from '@material-ui/core/CssBaseline';
 import StartView from './StartView';
 import PlayView from './PlayView';
+import Play2View from './Play2View.jsx';
 
 const theme = createMuiTheme({
   palette: {
@@ -21,6 +22,7 @@ const App = () => (
     <CssBaseLine />
     <Router>
       <Switch>
+        <Route path="/play2" component={Play2View} />
         <Route path="/play" component={PlayView} />
         <Route path="/" component={StartView} />
       </Switch>
