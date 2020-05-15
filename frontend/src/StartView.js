@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -27,8 +27,8 @@ function BotSelector({ title, options, value, onChange }) {
     <FormControl className={classes.formControl}>
       <InputLabel>{title}</InputLabel>
       <Select value={value} onChange={e => onChange(e.target.value)}>
-        {options.map((option, i) => (
-          <MenuItem value={i} key={option}>
+        {options.map(option => (
+          <MenuItem value={option} key={option}>
             {option}
           </MenuItem>
         ))}
@@ -37,24 +37,47 @@ function BotSelector({ title, options, value, onChange }) {
   );
 }
 
+function UploadButton({ onFileUpload }) {
+  const [title, setTitle] = useState('Upload Bot');
+  const input = useRef(null);
+  const onChange = e => {
+    const file = e.target.files[0];
+    setTitle(`Uploaded!`);
+    setTimeout(() => setTitle('Upload Bot'), 1000);
+    onFileUpload(file);
+  };
+  return (
+    <Fab
+      variant="extended"
+      style={{ marginTop: '10%' }}
+      onClick={() => input.current.click()}
+    >
+      <input type="file" hidden ref={input} onChange={onChange} />
+      <NavigationIcon />
+      <div style={{ minWidth: '95px' }}>{title}</div>
+    </Fab>
+  );
+}
+
 function StartView() {
   const history = useHistory();
   const classes = useStyles();
   const [botOne, selectBotOne] = useState('');
   const [botTwo, selectBotTwo] = useState('');
+  const options = ['bot-1', 'bot-2', 'bot-3'];
   return (
     <Container maxWidth="md" className={classes.container}>
       <BotSelector
         title="Bot One"
         value={botOne}
         onChange={selectBotOne}
-        options={[1, 2, 3]}
+        options={options}
       />
       <BotSelector
         title="Bot Two"
         value={botTwo}
         onChange={selectBotTwo}
-        options={[1, 2, 3]}
+        options={options}
       />
       <Button
         variant="contained"
@@ -66,10 +89,7 @@ function StartView() {
         Play The game
       </Button>
       <br />
-      <Fab variant="extended" style={{ marginTop: '10%' }}>
-        <NavigationIcon />
-        Upload Bot
-      </Fab>
+      <UploadButton onFileUpload={file => console.log(file)} />
     </Container>
   );
 }

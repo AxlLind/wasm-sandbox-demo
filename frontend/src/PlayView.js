@@ -3,8 +3,9 @@ import { useLocation, Redirect } from 'react-router-dom';
 
 function PlayView() {
   const { state } = useLocation();
-  if (!state) return <Redirect to="/" />;
-
+  if (!state || !state.botOne || !state.botTwo) {
+    return <Redirect to="/" />;
+  }
   return (
     <div>
       Placeholder for debugging!
