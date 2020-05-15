@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Board from './Game/Board';
+import Game from './Game/Game';
 
 class Play2View extends Component {
 
@@ -10,11 +10,9 @@ class Play2View extends Component {
         const query_params = new URLSearchParams(props.location.search)
 
         this.state = {
-            bot1: query_params.get("bot1"),
-            bot2: query_params.get("bot2")
+            xPlayer: query_params.get("xPlayer"),
+            oPlayer: query_params.get("oPlayer")
         };
-
-        console.log("Fighting bots:", this.state.bot1, this.state.bot2)
     }
 
 
@@ -24,7 +22,7 @@ class Play2View extends Component {
                 <div>
                     What a thing
                 </div>
-                <Board></Board>
+                <Game xPlayer={this.state.xPlayer} oPlayer={this.state.oPlayer}></Game>
             </div>
         )
     }

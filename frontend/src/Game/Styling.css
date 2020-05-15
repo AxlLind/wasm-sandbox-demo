@@ -1,11 +1,13 @@
-/* .board-wrapper {
+.game-wrapper {
     display: flex;
     flex-flow: row wrap;
-} */
+    padding: 4px;
+}
 
 .board {
     width: 250px;
     height: 250px;
+    margin-right: 20px;
 }
 
 .board-row {
@@ -22,6 +24,25 @@
     background-color: #aaa;
     border: 1px solid black;
     padding: 0;
-    border-radius: 10px;
-    
+    border-radius: 10px;   
+}
+
+.stats {
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.stats h2 {
+    margin: 0;
+}
+
+.stats button {
+    width: 200px;
+    height: 80px;
+}
+
+.playBot__button {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }
