@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import request from 'superagent';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -17,7 +19,12 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     textAlign: 'center',
-    marginTop: '20%',
+    marginTop: '4%',
+    marginBottom: '4%',
+  },
+  title: {
+    fontSize: '80px',
+    color: theme.palette.primary.main,
   },
 }));
 
@@ -49,12 +56,12 @@ function UploadButton({ onFileUpload }) {
   return (
     <Fab
       variant="extended"
-      style={{ marginTop: '10%' }}
+      style={{ marginTop: '5%' }}
       onClick={() => input.current.click()}
     >
-      <input type="file" hidden ref={input} onChange={onChange} />
       <NavigationIcon />
       <div style={{ minWidth: '95px' }}>{title}</div>
+      <input hidden type="file" ref={input} onChange={onChange} />
     </Fab>
   );
 }
@@ -64,33 +71,63 @@ function StartView() {
   const classes = useStyles();
   const [botOne, selectBotOne] = useState('');
   const [botTwo, selectBotTwo] = useState('');
-  const options = ['bot-1', 'bot-2', 'bot-3'];
+  const [options, setOptions] = useState([]);
+  useEffect(() => {
+    request
+      .get('/bots')
+      .then(res => setOptions(res.body))
+      .catch(e => console.log(e));
+  }, []);
+  const onFileUpload = async file => {
+    const dataUrl = await new Promise(resolve => {
+      const r = new FileReader();
+      r.readAsDataURL(file);
+      r.onload = () => resolve(r.result);
+    });
+
+    // hacky way to get a base64 decoded file
+    const base64File = dataUrl.split('base64,').pop();
+    try {
+      await request.post('/bots').send({
+        name: 'test',
+        base64_encoded_bot: base64File,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
-    <Container maxWidth="md" className={classes.container}>
-      <BotSelector
-        title="Bot One"
-        value={botOne}
-        onChange={selectBotOne}
-        options={options}
-      />
-      <BotSelector
-        title="Bot Two"
-        value={botTwo}
-        onChange={selectBotTwo}
-        options={options}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        style={{ marginTop: '2%' }}
-        onClick={() => history.push('/play', { botOne, botTwo })}
-      >
-        Play The game
-      </Button>
-      <br />
-      <UploadButton onFileUpload={file => console.log(file)} />
-    </Container>
+    <Grid container style={{ marginTop: '5%' }}>
+      <Container maxWidth="md" className={classes.container}>
+        <div className={classes.title}>WASM Tic-Tac-Toe</div>
+      </Container>
+      <Container maxWidth="md" className={classes.container}>
+        <BotSelector
+          title="Bot One"
+          value={botOne}
+          onChange={selectBotOne}
+          options={options}
+        />
+        <BotSelector
+          title="Bot Two"
+          value={botTwo}
+          onChange={selectBotTwo}
+          options={options}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          style={{ marginTop: '2%' }}
+          onClick={() => history.push('/play', { botOne, botTwo })}
+        >
+          Play The game
+        </Button>
+      </Container>
+      <Container maxWidth="md" className={classes.container}>
+        <UploadButton onFileUpload={onFileUpload} />
+      </Container>
+    </Grid>
   );
 }
 
