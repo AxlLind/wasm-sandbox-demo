@@ -15,6 +15,7 @@ const theme = createMuiTheme({
       dark: '#0e6b0e',
     },
   },
+  typography: { fontFamily: 'Hack, monospace' },
 });
 
 const App = () => (
