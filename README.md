@@ -15,7 +15,7 @@ $ heroku git:remote -a <the name of your backend heroku project>
 Since new heroku removes are named `heroku` we have to rename the backend
 remote to something more suitable
 ```sh
-$ git git remote rename heroku heroku-backend
+$ git remote rename heroku heroku-backend
 ```
 
 Moving on to the frontend. Stand in the project root directory (the location
@@ -27,7 +27,7 @@ $ heroku git:remote -a <the name of your frontend heroku project>
 
 Rename the frontend remote to something more suitable
 ```sh
-$ git git remote rename heroku heroku-frontend
+$ git remote rename heroku heroku-frontend
 ```
 
 # Running locally
@@ -47,10 +47,10 @@ $ npm start
 # Deploying to heroku
 The backend
 ```sh
-git subtree push --prefix backend heroku-backend master
+$ git subtree push --prefix backend heroku-backend master
 ```
 
-The backend
+The frontend
 ```sh
-git subtree push --prefix frontend heroku-frontend master
+$ git subtree push --prefix frontend heroku-frontend master
 ```
