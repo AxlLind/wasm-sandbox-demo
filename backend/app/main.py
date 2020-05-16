@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.database import crud, models, schemas, SessionLocal, engine
 from typing import List
@@ -10,6 +11,14 @@ app = FastAPI(
     title="WASM Bots",
     description="A simple server for our LangSec project where we can upload base64 encoded wasm bots",
     version="1.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Used to create a connection to the db upon requests to the server
