@@ -47,10 +47,10 @@ $ npm start
 # Deploying to heroku
 The backend
 ```sh
-git subtree push --prefix backend heroku-backend master
+$ git subtree push --prefix backend heroku-backend master
 ```
 
 The frontend
 ```sh
-git subtree push --prefix frontend heroku-frontend master
+$ git subtree push --prefix frontend heroku-frontend master
 ```
