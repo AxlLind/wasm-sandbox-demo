@@ -54,15 +54,17 @@ function UploadButton({ onFileUpload }) {
     onFileUpload(file);
   };
   return (
-    <Fab
-      variant="extended"
-      style={{ marginTop: '5%' }}
-      onClick={() => input.current.click()}
-    >
-      <NavigationIcon />
-      <div style={{ minWidth: '95px' }}>{title}</div>
-      <input hidden type="file" ref={input} onChange={onChange} />
-    </Fab>
+    <div>
+      <Fab
+        variant="extended"
+        style={{ marginTop: '5%' }}
+        onClick={() => input.current.click()}
+      >
+        <NavigationIcon />
+        <div style={{ minWidth: '95px' }}>{title}</div>
+        <input hidden type="file" ref={input} onChange={onChange} />
+      </Fab>
+    </div>
   );
 }
 
@@ -72,10 +74,12 @@ function StartView() {
   const [botOne, selectBotOne] = useState('');
   const [botTwo, selectBotTwo] = useState('');
   const [options, setOptions] = useState([]);
+
   useEffect(() => {
     request
-      .get('/bots')
-      .then(res => setOptions(res.body))
+      .get('https://wasm-bots.herokuapp.com/bots')
+      .then(res => res.body.map(({ name }) => name))
+      .then(options => setOptions(['human', ...options]))
       .catch(e => console.log(e));
   }, []);
   const onFileUpload = async file => {
@@ -88,14 +92,15 @@ function StartView() {
     // hacky way to get a base64 decoded file
     const base64File = dataUrl.split('base64,').pop();
     try {
-      await request.post('/bots').send({
-        name: 'test',
+      await request.post('https://wasm-bots.herokuapp.com/bots').send({
+        name: 'bot-in-c',
         base64_encoded_bot: base64File,
       });
     } catch (e) {
       console.log(e);
     }
   };
+
   return (
     <Grid container style={{ marginTop: '5%' }}>
       <Container maxWidth="md" className={classes.container}>
@@ -119,7 +124,9 @@ function StartView() {
           color="primary"
           size="large"
           style={{ marginTop: '2%' }}
-          onClick={() => history.push('/play', { botOne, botTwo })}
+          onClick={() =>
+            history.push(`/play?xPlayer=${botOne}&oPlayer=${botTwo}`)
+          }
         >
           Play The game
         </Button>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Game from './Game/Game';
 
-class Play2View extends Component {
+class PlayView extends Component {
 
     constructor(props) {
         super(props);
@@ -28,4 +28,4 @@ class Play2View extends Component {
     }
 }
 
-export default Play2View;
+export default PlayView;
