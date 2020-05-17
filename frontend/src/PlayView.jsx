@@ -1,31 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useLocation } from 'react-router';
 import Game from './Game/Game';
 
-class PlayView extends Component {
+function PlayView() {
+  const query = new URLSearchParams(useLocation().search);
 
-    constructor(props) {
-        super(props);
-
-        // Get the bots from the url params
-        const query_params = new URLSearchParams(props.location.search)
-
-        this.state = {
-            xPlayer: query_params.get("xPlayer"),
-            oPlayer: query_params.get("oPlayer")
-        };
-    }
-
-
-    render() {
-        return (
-            <div>
-                <div>
-                    What a thing
-                </div>
-                <Game xPlayer={this.state.xPlayer} oPlayer={this.state.oPlayer}></Game>
-            </div>
-        )
-    }
+  // Get the bots from the url params
+  const xPlayer = query.get('xPlayer');
+  const oPlayer = query.get('oPlayer');
+  return (
+    <div>
+      <div>What a thing</div>
+      <Game xPlayer={xPlayer} oPlayer={oPlayer} />
+    </div>
+  );
 }
 
 export default PlayView;
