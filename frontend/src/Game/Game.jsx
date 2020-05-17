@@ -39,65 +39,57 @@ class Game extends Component {
     const { xPlayer, oPlayer } = this.state;
     const xBot = xPlayer === 'human' ? null : await Bot.fetch(xPlayer);
     const oBot = oPlayer === 'human' ? null : await Bot.fetch(oPlayer);
-    this.setState({ xBot,oBot });
+    this.setState({ xBot, oBot });
   };
 
   /**
    * @returns the winning player or null
    */
-  checkWinner(boxes) {
+  checkWinner = boxes => {
     const threeInARow = winningCombinations.find(
       ([a, b, c]) =>
         boxes[a] != null && boxes[a] === boxes[b] && boxes[b] === boxes[c],
     );
     return threeInARow ? boxes[threeInARow[0]] : null;
-  }
+  };
 
   /**
    * Plays the next players move
    * @param {int} index
    * @return true if move was successfully
    */
-  playMove(index) {
-    const { boxes } = this.state;
+  playMove = index => {
+    const { boxes, xIsNext } = this.state;
 
     if (boxes[index] != null) {
       console.log('A move has already been played here');
       return false;
     }
 
-    boxes[index] = this.state.xIsNext ? 'X' : 'O';
-
-    this.setState({
-      boxes,
-      xIsNext: !this.state.xIsNext,
-    });
-
+    boxes[index] = xIsNext ? 'X' : 'O';
+    this.setState({ boxes, xIsNext: !xIsNext });
     return true;
-  }
+  };
 
   /**
    * Plays bots
    */
-  playBots() {
+  playBots = () => {
     // Check if there are any bots playing
     const { xIsNext, xBot, oBot, boxes } = this.state;
     const bot = xIsNext ? xBot : oBot;
+    if (!bot) return;
 
-    if (bot) {
-        // get move from xBot
-        const move = bot.makeMove(boxes);
-        const res = this.playMove(move);
-        if (!res) {
-            console.error("Bot failed");
-        }
-    }
-  }
+    // get move from xBot
+    const move = bot.makeMove(boxes);
+    const res = this.playMove(move);
+    if (!res) console.error('Bot failed');
+  };
 
   /**
    * Handles all game logic. Should be run at the end of every turn.
    */
-  tick() {
+  tick = () => {
     const { boxes } = this.state;
 
     // Stop game if all boxes are checked
@@ -112,12 +104,9 @@ class Game extends Component {
     const winner = this.checkWinner(boxes);
 
     if (winner) {
-      this.setState({
-        winner,
-        isRunning: false,
-      });
+      this.setState({ winner, isRunning: false });
     }
-  }
+  };
 
   resetGame = () => {
     this.setState({
@@ -129,39 +118,22 @@ class Game extends Component {
   };
 
   handleBoxClick = index => {
-    // move was made by a human
-    if (this.state.xIsNext) {
-      if (this.state.xPlayer === 'human') {
-        this.playMove(index);
-        this.tick();
-      }
-    } else {
-      if (this.state.oPlayer === 'human') {
-        this.playMove(index);
-        this.tick();
-      }
+    const { xIsNext, xPlayer, oPlayer } = this.state;
+    const player = xIsNext ? xPlayer : oPlayer;
+    if (player === 'human') {
+      this.playMove(index);
+      this.tick();
     }
   };
 
-  createBoxComponent = index =>  (
+  createBoxComponent = index => (
     <button className="board__box" onClick={() => this.handleBoxClick(index)}>
       {this.state.boxes[index]}
     </button>
   );
 
-  playBotButton = () => {
-    if (this.state.xPlayer !== 'human' || this.state.oPlayer !== 'human') {
-      return (
-        <div className="playBot__button">
-          <button onClick={() => this.tick()}>Play bot</button>
-        </div>
-      );
-    }
-  };
-
-  render() {
-    const { isRunning, winner } = this.state;
-
+  render = () => {
+    const { isRunning, winner, xPlayer, oPlayer } = this.state;
     return (
       <div className="game-wrapper">
         <div className="board">
@@ -182,20 +154,22 @@ class Game extends Component {
           </div>
         </div>
         <div className="stats">
-          <h2>X Player: {this.state.xPlayer}</h2>
-          <h2>O Player: {this.state.oPlayer}</h2>
-          {!isRunning ? (
-            <div>
-              <h2>Winner: {winner}</h2>
-              <button onClick={() => this.resetGame()}>Play again</button>
+          <h2>X Player: {xPlayer}</h2>
+          <h2>O Player: {oPlayer}</h2>
+          {isRunning ? (
+            <div className="playBot__button">
+              <button onClick={this.tick}>Play bot</button>
             </div>
           ) : (
-            this.playBotButton()
+            <div>
+              <h2>Winner: {winner}</h2>
+              <button onClick={this.resetGame}>Play again</button>
+            </div>
           )}
         </div>
       </div>
     );
-  }
+  };
 }
 
 export default Game;

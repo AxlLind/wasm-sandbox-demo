@@ -13,7 +13,7 @@ const boardToWasmArray = board =>
       if (box === 'O') val = 2;
       return val << (i * 2);
     })
-    .reduce((acc, val, i) => acc | val, 0);
+    .reduce((acc, val) => acc | val, 0);
 
 // Loads the wasm module from a base64 string
 const loadWasmModule = async base64 => {
