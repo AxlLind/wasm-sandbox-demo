@@ -12,6 +12,7 @@ pydantic = "*"
 python-dotenv = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
+wasmer = "*"
 
 [requires]
 python_version = "3.7"

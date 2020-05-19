@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.database import crud, models, schemas, SessionLocal, engine
 from typing import List
+from app.validate_wasm import validate_wasm
 
 models.Base.metadata.create_all(bind=engine) # Dont know what this does
 
@@ -48,6 +49,8 @@ def get_bot_by_name(name: str, db: Session = Depends(get_db)):
 @app.post("/bots", response_model=schemas.Bot)
 def create_bot(bot: schemas.BotBase, db: Session = Depends(get_db)):
     """Creates a new bot"""
+    if not validate_wasm(bot.base64_encoded_bot):
+        raise HTTPException(status_code=400, detail=f"Provided wasm file is invalid")
     db_bot = crud.get_bot_by_name(db, name=bot.name)
     if db_bot:
         # A bot with that name already exists
