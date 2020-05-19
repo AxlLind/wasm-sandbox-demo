@@ -2,8 +2,8 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.database import crud, models, schemas, SessionLocal, engine
-from typing import List
 from app.validate_wasm import validate_wasm
+from typing import List
 
 models.Base.metadata.create_all(bind=engine) # Dont know what this does
 
