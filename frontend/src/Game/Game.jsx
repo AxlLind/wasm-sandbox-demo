@@ -1,6 +1,22 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import Bot from './Bot';
-import './Styling.css';
+
+const useStyles = () => ({
+  gridButton: {
+    width: '100px',
+    height: '100px',
+    marginTop: '6px',
+    fontSize: '30px',
+  },
+  mainContainer: {
+    marginTop: '10%',
+    textAlign: 'center',
+  },
+});
 
 const winningCombinations = [
   [0, 1, 2],
@@ -13,11 +29,17 @@ const winningCombinations = [
   [2, 4, 6],
 ];
 
-class Game extends Component {
+const checkWinner = boxes => {
+  const threeInARow = winningCombinations
+    .map(arr => arr.map(i => boxes[i]))
+    .find(([a, b, c]) => a !== null && a === b && b === c);
+  return threeInARow && threeInARow[0];
+};
+
+class Game extends PureComponent {
   constructor(props) {
     super(props);
 
-    // Initialize board state
     this.state = {
       boxes: Array(9).fill(null),
       xPlayer: props.xPlayer || 'human',
@@ -28,10 +50,6 @@ class Game extends Component {
       xBot: null,
       oBot: null,
     };
-
-    console.log('Initialized Game');
-    console.log('Player X:', this.state.xPlayer);
-    console.log('Player O:', this.state.oPlayer);
   }
 
   componentDidMount = async () => {
@@ -42,38 +60,16 @@ class Game extends Component {
     this.setState({ xBot, oBot });
   };
 
-  /**
-   * @returns the winning player or null
-   */
-  checkWinner = boxes => {
-    const threeInARow = winningCombinations.find(
-      ([a, b, c]) =>
-        boxes[a] != null && boxes[a] === boxes[b] && boxes[b] === boxes[c],
-    );
-    return threeInARow ? boxes[threeInARow[0]] : null;
-  };
-
-  /**
-   * Plays the next players move
-   * @param {int} index
-   * @return true if move was successfully
-   */
   playMove = index => {
     const { boxes, xIsNext } = this.state;
 
-    if (boxes[index] != null) {
-      console.log('A move has already been played here');
-      return false;
-    }
+    if (boxes[index] !== null) return false;
 
     boxes[index] = xIsNext ? 'X' : 'O';
     this.setState({ boxes, xIsNext: !xIsNext });
     return true;
   };
 
-  /**
-   * Plays bots
-   */
   playBots = () => {
     // Check if there are any bots playing
     const { xIsNext, xBot, oBot, boxes } = this.state;
@@ -86,9 +82,6 @@ class Game extends Component {
     if (!res) console.error('Bot failed');
   };
 
-  /**
-   * Handles all game logic. Should be run at the end of every turn.
-   */
   tick = () => {
     const { boxes } = this.state;
 
@@ -101,7 +94,7 @@ class Game extends Component {
     }
 
     // Check for winner
-    const winner = this.checkWinner(boxes);
+    const winner = checkWinner(boxes);
 
     if (winner) {
       this.setState({ winner, isRunning: false });
@@ -126,50 +119,60 @@ class Game extends Component {
     }
   };
 
-  createBoxComponent = index => (
-    <button className="board__box" onClick={() => this.handleBoxClick(index)}>
-      {this.state.boxes[index]}
-    </button>
+  gameRow = ids => (
+    <Grid container spacing={1} justify="center">
+      {ids.map(i => (
+        <Grid item key={i}>
+          <Button
+            onClick={() => this.handleBoxClick(i)}
+            className={this.props.classes.gridButton}
+            variant="contained"
+            color="primary"
+          >
+            {this.state.boxes[i] || ' '}
+          </Button>
+        </Grid>
+      ))}
+    </Grid>
   );
 
   render = () => {
     const { isRunning, winner, xPlayer, oPlayer } = this.state;
+    const { classes } = this.props;
     return (
-      <div className="game-wrapper">
-        <div className="board">
-          <div className="board-row">
-            {this.createBoxComponent(0)}
-            {this.createBoxComponent(1)}
-            {this.createBoxComponent(2)}
-          </div>
-          <div className="board-row">
-            {this.createBoxComponent(3)}
-            {this.createBoxComponent(4)}
-            {this.createBoxComponent(5)}
-          </div>
-          <div className="board-row">
-            {this.createBoxComponent(6)}
-            {this.createBoxComponent(7)}
-            {this.createBoxComponent(8)}
-          </div>
-        </div>
-        <div className="stats">
-          <h2>X Player: {xPlayer}</h2>
-          <h2>O Player: {oPlayer}</h2>
-          {isRunning ? (
-            <div className="playBot__button">
-              <button onClick={this.tick}>Play bot</button>
-            </div>
-          ) : (
-            <div>
-              <h2>Winner: {winner}</h2>
-              <button onClick={this.resetGame}>Play again</button>
-            </div>
-          )}
-        </div>
-      </div>
+      <Container className={classes.mainContainer}>
+        <Grid container spacing={1}>
+          {this.gameRow([0, 1, 2])}
+          {this.gameRow([3, 4, 5])}
+          {this.gameRow([6, 7, 8])}
+        </Grid>
+        <h2>X Player: {xPlayer}</h2>
+        <h2>O Player: {oPlayer}</h2>
+        {isRunning ? (
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={this.tick}
+          >
+            Play bot
+          </Button>
+        ) : (
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={this.resetGame}
+            >
+              Play again
+            </Button>
+            <h2>Winner: {winner}</h2>
+          </>
+        )}
+      </Container>
     );
   };
 }
 
-export default Game;
+export default withStyles(useStyles)(Game);

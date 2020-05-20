@@ -54,17 +54,15 @@ function UploadButton({ onFileUpload }) {
     onFileUpload(file);
   };
   return (
-    <div>
-      <Fab
-        variant="extended"
-        style={{ marginTop: '5%' }}
-        onClick={() => input.current.click()}
-      >
-        <NavigationIcon />
-        <div style={{ minWidth: '95px' }}>{title}</div>
-        <input hidden type="file" ref={input} onChange={onChange} />
-      </Fab>
-    </div>
+    <Fab
+      variant="extended"
+      style={{ marginTop: '5%' }}
+      onClick={() => input.current.click()}
+    >
+      <NavigationIcon />
+      <div style={{ minWidth: '95px' }}>{title}</div>
+      <input hidden type="file" ref={input} onChange={onChange} />
+    </Fab>
   );
 }
 
@@ -124,9 +122,7 @@ function StartView() {
           color="primary"
           size="large"
           style={{ marginTop: '2%' }}
-          onClick={() =>
-            history.push(`/play?xPlayer=${botOne}&oPlayer=${botTwo}`)
-          }
+          onClick={() => history.push(`/play?x=${botOne}&o=${botTwo}`)}
         >
           Play The game
         </Button>
