@@ -13,8 +13,6 @@ import Fab from '@material-ui/core/Fab';
 import { makeStyles } from '@material-ui/core/styles';
 import NavigationIcon from '@material-ui/icons/Navigation';
 
-const UPLOAD_URL = 'https://wasm-bots.herokuapp.com/bots';
-
 const useStyles = makeStyles(theme => ({
   container: {
     textAlign: 'center',
@@ -28,6 +26,7 @@ const DialogInstructions = () => (
     To upload your own bot select your compiled WebAssembly file and give it a
     name! The requirements put on the file are the following:
     <br />
+    <br />- It must be a valid <b>wasm</b> file.
     <br />- It cannot import <b>any</b> external functions.
     <br />- It must export a <b>single</b> function <i>'makeMove'</i>.
     <br />- This function takes in the whole board as a single number. Every two
@@ -40,20 +39,19 @@ const DialogInstructions = () => (
   </DialogContentText>
 );
 
-// hacky way to read a file as a base64 string
-const readFileAsBase64 = file =>
-  new Promise(resolve => {
+const uploadBot = async (file, name, onSuccess) => {
+  if (!file || !name) return;
+
+  // hacky way to read a file as a base64 string
+  const base64File = await new Promise(resolve => {
     const r = new FileReader();
     r.readAsDataURL(file);
     r.onload = () => resolve(r.result.split('base64,').pop());
   });
-
-const uploadBot = async (file, name, onSuccess) => {
-  if (!file || !name) return;
-  const base64File = await readFileAsBase64(file);
-  const body = { name, base64_encoded_bot: base64File };
   try {
-    await request.post(UPLOAD_URL).send(body);
+    await request
+      .post('https://wasm-bots.herokuapp.com/bots')
+      .send({ name, base64_encoded_bot: base64File });
     onSuccess();
   } catch (e) {
     console.error(e);
