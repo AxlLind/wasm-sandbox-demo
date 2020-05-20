@@ -55,8 +55,8 @@ class Game extends PureComponent {
   componentDidMount = async () => {
     // instantiate bots, if there are any
     const { xPlayer, oPlayer } = this.state;
-    const xBot = xPlayer === 'human' ? null : await Bot.fetch(xPlayer);
-    const oBot = oPlayer === 'human' ? null : await Bot.fetch(oPlayer);
+    const xBot = xPlayer === 'human' ? null : await Bot.fetch(xPlayer, true);
+    const oBot = oPlayer === 'human' ? null : await Bot.fetch(oPlayer, false);
     this.setState({ xBot, oBot });
   };
 
