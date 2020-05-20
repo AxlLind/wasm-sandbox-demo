@@ -29,13 +29,13 @@ const DialogInstructions = () => (
     <br />- It must be a valid <b>wasm</b> file.
     <br />- It cannot import <b>any</b> external functions.
     <br />- It must export a <b>single</b> function <i>'makeMove'</i>.
-    <br />- This function takes in the whole board as a single number. Every two
-    bits from bit <b>0-17</b> represent one box of the board, with the upper
-    left box in bits <b>0-1</b> and so on. A <b>0</b> value represents an empty
-    box, <b>1</b> your pieces, and <b>2</b> your opponent.
     <br />
     <br />
-    May the best bot win!
+    This function takes in the whole board as a single number. Every two bits
+    from bit <b>0-17</b> represent one box of the board, with the upper left box
+    in bits <b>0-1</b> and so on. A <b>0</b> value represents an empty board
+    state, <b>1</b> your pieces, and <b>2</b> your opponent. May the best bot
+    win!
   </DialogContentText>
 );
 
