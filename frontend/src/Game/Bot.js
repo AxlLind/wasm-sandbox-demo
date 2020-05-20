@@ -9,11 +9,11 @@ class Bot {
     this.wasm = null;
   }
 
-  // Sending complicated objects to WASM is annoying.
-  // This is a demo so lets just cram the board state
-  // into a single i32 and pass that to the module.
-  boardToSingleInt = board =>
-    board
+  makeMove = board => {
+    // Sending complicated objects to WASM is annoying.
+    // This is a demo so lets just cram the board state
+    // into a single i32 and pass that to the module.
+    const boardAsInt = board
       .map((box, i) => {
         let val = 3;
         if (box === null) val = 0;
@@ -22,11 +22,7 @@ class Bot {
         return val << (i * 2);
       })
       .reduce((acc, val) => acc | val, 0);
-
-  makeMove = board => {
-    const boardAsInt = this.boardToSingleInt(board);
-    const move = this.wasm.makeMove(boardAsInt);
-    return move;
+    return this.wasm.makeMove(boardAsInt);
   };
 
   static async fetch(name, isX) {
