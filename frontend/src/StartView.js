@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import request from 'superagent';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -7,10 +8,8 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import Fab from '@material-ui/core/Fab';
-import NavigationIcon from '@material-ui/icons/Navigation';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import BotUploader from './BotUploader';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -44,28 +43,6 @@ function BotSelector({ title, options, value, onChange }) {
   );
 }
 
-function UploadButton({ onFileUpload }) {
-  const [title, setTitle] = useState('Upload Bot');
-  const input = useRef(null);
-  const onChange = e => {
-    const file = e.target.files[0];
-    setTitle(`Uploaded!`);
-    setTimeout(() => setTitle('Upload Bot'), 1000);
-    onFileUpload(file);
-  };
-  return (
-    <Fab
-      variant="extended"
-      style={{ marginTop: '5%' }}
-      onClick={() => input.current.click()}
-    >
-      <NavigationIcon />
-      <div style={{ minWidth: '95px' }}>{title}</div>
-      <input hidden type="file" ref={input} onChange={onChange} />
-    </Fab>
-  );
-}
-
 function StartView() {
   const history = useHistory();
   const classes = useStyles();
@@ -80,24 +57,6 @@ function StartView() {
       .then(options => setOptions(['human', ...options]))
       .catch(e => console.log(e));
   }, []);
-  const onFileUpload = async file => {
-    const dataUrl = await new Promise(resolve => {
-      const r = new FileReader();
-      r.readAsDataURL(file);
-      r.onload = () => resolve(r.result);
-    });
-
-    // hacky way to get a base64 decoded file
-    const base64File = dataUrl.split('base64,').pop();
-    try {
-      await request.post('https://wasm-bots.herokuapp.com/bots').send({
-        name: 'bot-in-c',
-        base64_encoded_bot: base64File,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   return (
     <Grid container style={{ marginTop: '5%' }}>
@@ -127,9 +86,7 @@ function StartView() {
           Play The game
         </Button>
       </Container>
-      <Container maxWidth="md" className={classes.container}>
-        <UploadButton onFileUpload={onFileUpload} />
-      </Container>
+      <BotUploader />
     </Grid>
   );
 }
