@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Bot from './Bot';
@@ -9,7 +8,7 @@ const useStyles = () => ({
   gridButton: {
     width: '100px',
     height: '100px',
-    marginTop: '6px',
+    margin: '4px',
     fontSize: '30px',
   },
   mainContainer: {
@@ -120,7 +119,7 @@ class Game extends PureComponent {
   };
 
   gameRow = ids => (
-    <Grid container spacing={1} justify="center">
+    <Grid container justify="center">
       {ids.map(i => (
         <Grid item key={i}>
           <Button
@@ -137,40 +136,30 @@ class Game extends PureComponent {
   );
 
   render = () => {
-    const { isRunning, winner, xPlayer, oPlayer } = this.state;
     const { classes } = this.props;
+    const { isRunning, winner, xPlayer, oPlayer } = this.state;
+    const title = winner ? `Winner is ${winner}!` : `${xPlayer} vs ${oPlayer}`;
     return (
-      <Container className={classes.mainContainer}>
-        <Grid container spacing={1}>
+      <Grid container className={classes.mainContainer}>
+        <Grid container justify="center">
+          <h2>{title}</h2>
+        </Grid>
+        <Grid container>
           {this.gameRow([0, 1, 2])}
           {this.gameRow([3, 4, 5])}
           {this.gameRow([6, 7, 8])}
         </Grid>
-        <h2>X Player: {xPlayer}</h2>
-        <h2>O Player: {oPlayer}</h2>
-        {isRunning ? (
+        <Grid container justify="center" style={{ marginTop: '2%' }}>
           <Button
             variant="contained"
             color="primary"
             size="large"
-            onClick={this.tick}
+            onClick={isRunning ? this.tick : this.resetGame}
           >
-            Play bot
+            {isRunning ? 'Play bot' : 'Play Again?'}
           </Button>
-        ) : (
-          <>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={this.resetGame}
-            >
-              Play again
-            </Button>
-            <h2>Winner: {winner}</h2>
-          </>
-        )}
-      </Container>
+        </Grid>
+      </Grid>
     );
   };
 }
