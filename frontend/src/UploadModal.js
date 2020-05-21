@@ -34,8 +34,9 @@ const DialogInstructions = () => (
     This function takes in the whole board as a single number. Every two bits
     from bit <b>0-17</b> represent one box of the board, with the upper left box
     in bits <b>0-1</b> and so on. A <b>0</b> value represents an empty board
-    state, <b>1</b> your pieces, and <b>2</b> your opponent. May the best bot
-    win!
+    state, <b>1</b> your pieces, and <b>2</b> your opponent. The return value of
+    the function should be a number between 0-8, indicating the index of the
+    square to place your piece. May the best bot win!
   </DialogContentText>
 );
 
@@ -58,7 +59,7 @@ const uploadBot = async (file, name, onSuccess) => {
   }
 };
 
-const BotUploader = () => {
+const UploadModal = () => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');
@@ -121,4 +122,4 @@ const BotUploader = () => {
   );
 };
 
-export default BotUploader;
+export default UploadModal;
