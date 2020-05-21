@@ -8,8 +8,8 @@ WASM_EXPORT int makeMove(int state) {
     board[i] = (state >> (i * 2)) & 3;
 
   // Take the middle square if available
-  if (board[5] == EMPTY)
-    return 5;
+  if (board[4] == EMPTY)
+    return 4;
 
   // Otherwise, pick the first available square
   for (int i = 0; i < 9; ++i) {
