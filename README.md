@@ -1,4 +1,5 @@
-# wasm-sandbox-demo
+# WebAssembly Sandbox Demo
+To showcase the security and sandbox execution of WASM we created this TicTacToe demo. Users are allowed to upload code, code that plays  that is then executed in a sandboxed environment on clients.
 
 # Setup
 You have to create new Heoku projects, one for the backend and one for the frontend.
