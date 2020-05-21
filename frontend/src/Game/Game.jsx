@@ -60,8 +60,9 @@ class Game extends PureComponent {
   };
 
   playMove = index => {
-    const { boxes, xIsNext } = this.state;
+    const { boxes, xIsNext, isRunning } = this.state;
 
+    if (!isRunning) return false;
     if (boxes[index] !== null) return false;
 
     boxes[index] = xIsNext ? 'X' : 'O';
