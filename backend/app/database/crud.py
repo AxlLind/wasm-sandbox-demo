@@ -5,7 +5,18 @@ from app.database import models, schemas
 def get_bot(db: Session, bot_id: int):
     return db.query(models.Bot).filter(models.Bot.id == bot_id).first()
 
-
+def remove_bot(db: Session, bot_id: int):
+    """
+    Returns true or false depending on if action was successfull
+    """
+    bot = db.query(models.Bot).filter(models.Bot.id == bot_id).first()
+    if not bot:
+        return False
+    
+    db.delete(bot)
+    db.commit()
+    return True 
+ 
 def get_bot_by_name(db: Session, name: str):
     return db.query(models.Bot).filter(models.Bot.name == name).first()
 
