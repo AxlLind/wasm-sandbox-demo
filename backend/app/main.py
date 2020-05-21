@@ -50,7 +50,7 @@ def get_bot_by_name(name: str, db: Session = Depends(get_db)):
 def create_bot(bot: schemas.BotBase, db: Session = Depends(get_db)):
     """Creates a new bot"""
     if not validate_wasm(bot.base64_encoded_bot):
-        raise HTTPException(status_code=400, detail=f"Provided wasm file is invalid")
+        raise HTTPException(status_code=400, detail="Provided wasm file is invalid")
     db_bot = crud.get_bot_by_name(db, name=bot.name)
     if db_bot:
         # A bot with that name already exists
