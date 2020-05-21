@@ -13,7 +13,7 @@ $ cd backend
 $ heroku git:remote -a <the name of your backend heroku project>
 ```
 
-Since new heroku removes are named `heroku` we have to rename the backend
+Since new heroku git remotes are named `heroku` we have to rename the backend
 remote to something more suitable
 ```sh
 $ git remote rename heroku heroku-backend
