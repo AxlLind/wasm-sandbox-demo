@@ -41,6 +41,14 @@ def get_bot(bot_id: int, db: Session = Depends(get_db)):
     """Fetched that particular bot"""
     return crud.get_bot(db, bot_id)
 
+@app.delete("/bots/{bot_id}")
+def remove_bot(bot_id: int, db: Session = Depends(get_db)):
+    """Removes that particular bot"""
+    if crud.remove_bot(db, bot_id):
+        return
+    else:
+        raise HTTPException(status_code=400, detail=f"Bot with id #{bot_id} does not exist")
+
 @app.post("/bots/get-by-name", response_model=schemas.Bot)
 def get_bot_by_name(name: str, db: Session = Depends(get_db)):
     """Fetched that particular bot"""
