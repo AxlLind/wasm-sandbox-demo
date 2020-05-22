@@ -15,8 +15,7 @@ fn get(board: i32, i: i32) -> i32 {
 }
 
 fn set(board: i32, i: i32, v: i32) -> i32 {
-  let mask = 3 << (i * 2);
-  (board & !mask) | (v << (i * 2))
+  board | (v << (i * 2))
 }
 
 fn negamax(board: i32, player: i32, depth: i32) -> (i32,i32) {
@@ -45,4 +44,8 @@ fn negamax(board: i32, player: i32, depth: i32) -> (i32,i32) {
 #[allow(non_snake_case)]
 pub extern "C" fn makeMove(board: i32) -> i32 {
   negamax(board, 1, 0).0
+}
+
+fn main() {
+  println!("{}", makeMove(0));
 }
