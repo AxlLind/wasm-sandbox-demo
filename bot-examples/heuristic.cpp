@@ -14,10 +14,10 @@ int set(int board, int i) {
 
 int heuristic(int board) {
   constexpr int scores[4][4] = {
-    {0      , 10, 100, 100000},
-    {-10    , 0 , 0  , 0     },
-    {-100   , 0 , 0  , 0     },
-    {-100000, 0 , 0  , 0     },
+    {     0, 10, 100, 10000},
+    {   -10,  0,   0,     0},
+    {  -100,  0,   0,     0},
+    {-10000,  0,   0,     0},
   };
   return std::accumulate(combinations, combinations+8, 0, [&](auto v, auto arr){
     int a = get(board,arr[0]), b = get(board,arr[1]), c = get(board,arr[2]);
