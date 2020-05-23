@@ -30,7 +30,7 @@ int heuristic(int board) {
 WASM_EXPORT extern "C" int makeMove(int board) {
   int s[9] = {0,1,2,3,4,5,6,7,8};
   std::transform(s, s+9, s, [&](auto i){
-    return get(board, i) == 0 ? heuristic(set(board,i)) : -1;
+    return get(board, i) == 0 ? heuristic(set(board,i)) : -100000;
   });
   auto max = std::max_element(s,s+9);
   return std::distance(s,max);
