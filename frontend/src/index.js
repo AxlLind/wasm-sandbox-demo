@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import CssBaseLine from '@material-ui/core/CssBaseline';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline, ThemeProvider, createMuiTheme } from '@material-ui/core';
 import StartView from './StartView';
 import PlayView from './PlayView';
 
@@ -20,7 +19,7 @@ const theme = createMuiTheme({
 
 const App = () => (
   <ThemeProvider theme={theme}>
-    <CssBaseLine />
+    <CssBaseline />
     <Router>
       <Switch>
         <Route path="/play" component={PlayView} />

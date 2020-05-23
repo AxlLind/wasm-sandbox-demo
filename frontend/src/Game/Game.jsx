@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, Grid, withStyles } from '@material-ui/core';
 import Bot from './Bot';
 
 const useStyles = () => ({
