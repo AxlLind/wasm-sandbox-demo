@@ -57,45 +57,35 @@ class Game extends PureComponent {
     this.setState({ xBot, oBot });
   };
 
-  playMove = index => {
-    const { boxes, xIsNext, isRunning } = this.state;
+  playMove = move => {
+    const { boxes, xIsNext } = this.state;
+    if (boxes[move] !== null) return false;
 
-    if (!isRunning) return false;
-    if (boxes[index] !== null) return false;
+    boxes[move] = xIsNext ? 'X' : 'O';
 
-    boxes[index] = xIsNext ? 'X' : 'O';
-    this.setState({ boxes, xIsNext: !xIsNext });
+    // Stop game if board is full or has a winner
+    const winner = checkWinner(boxes);
+    const isRunning = !winner && boxes.some(box => box === null);
+    this.setState({ boxes, winner, isRunning, xIsNext: !xIsNext });
     return true;
   };
 
-  playBots = () => {
+  onPlayBot = () => {
     // Check if there are any bots playing
     const { xIsNext, xBot, oBot, boxes } = this.state;
     const bot = xIsNext ? xBot : oBot;
     if (!bot) return;
 
-    // get move from xBot
     const move = bot.makeMove(boxes);
     const res = this.playMove(move);
     if (!res) console.error('Bot failed');
   };
 
-  tick = () => {
-    const { boxes } = this.state;
-
-    // Stop game if all boxes are checked
-    const allBoxesChecked = boxes.every(box => box !== null);
-    if (allBoxesChecked) {
-      this.setState({ isRunning: false });
-    } else {
-      this.playBots();
-    }
-
-    // Check for winner
-    const winner = checkWinner(boxes);
-
-    if (winner) {
-      this.setState({ winner, isRunning: false });
+  onBoxClick = move => {
+    const { xIsNext, xPlayer, oPlayer, isRunning } = this.state;
+    const player = xIsNext ? xPlayer : oPlayer;
+    if (isRunning && player === 'human') {
+      this.playMove(move);
     }
   };
 
@@ -108,21 +98,12 @@ class Game extends PureComponent {
     });
   };
 
-  handleBoxClick = index => {
-    const { xIsNext, xPlayer, oPlayer } = this.state;
-    const player = xIsNext ? xPlayer : oPlayer;
-    if (player === 'human') {
-      this.playMove(index);
-      this.tick();
-    }
-  };
-
   gameRow = ids => (
     <Grid container justify="center">
       {ids.map(i => (
         <Grid item key={i}>
           <Button
-            onClick={() => this.handleBoxClick(i)}
+            onClick={() => this.onBoxClick(i)}
             className={this.props.classes.gridButton}
             variant="contained"
             color="primary"
@@ -153,7 +134,7 @@ class Game extends PureComponent {
             variant="contained"
             color="primary"
             size="large"
-            onClick={isRunning ? this.tick : this.resetGame}
+            onClick={isRunning ? this.onPlayBot : this.resetGame}
           >
             {isRunning ? 'Play bot' : 'Play Again?'}
           </Button>
