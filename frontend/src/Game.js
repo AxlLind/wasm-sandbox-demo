@@ -115,14 +115,19 @@ class Game extends PureComponent {
     </Grid>
   );
 
-  render = () => {
-    const { classes } = this.props;
+  getTitle = () => {
     const { isRunning, winner, xPlayer, oPlayer } = this.state;
-    const title = winner ? `Winner is ${winner}!` : `${xPlayer} vs ${oPlayer}`;
+    if (winner) return `Winner is ${winner}!`;
+    if (!isRunning) return 'Game ended in a draw';
+    return `${xPlayer} vs ${oPlayer}`;
+  };
+
+  render = () => {
+    const { isRunning } = this.state;
     return (
-      <Grid container className={classes.mainContainer}>
+      <Grid container className={this.props.classes.mainContainer}>
         <Grid container justify="center">
-          <h2>{title}</h2>
+          <h2>{this.getTitle()}</h2>
         </Grid>
         <Grid container>
           {this.gameRow([0, 1, 2])}
