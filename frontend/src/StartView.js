@@ -50,7 +50,7 @@ function StartView() {
   const classes = useStyles();
   const [botOne, selectBotOne] = useState('');
   const [botTwo, selectBotTwo] = useState('');
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(['human']);
 
   useEffect(() => {
     request
