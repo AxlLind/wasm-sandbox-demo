@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router';
-import Game from './Game/Game';
+import Game from './Game';
 
 function PlayView() {
   const query = new URLSearchParams(useLocation().search);
