@@ -9,10 +9,6 @@ const useStyles = () => ({
     margin: '4px',
     fontSize: '30px',
   },
-  mainContainer: {
-    marginTop: '10%',
-    textAlign: 'center',
-  },
 });
 
 const winningCombinations = [
@@ -103,10 +99,10 @@ class Game extends PureComponent {
       {ids.map(i => (
         <Grid item key={i}>
           <Button
-            onClick={() => this.onBoxClick(i)}
-            className={this.props.classes.gridButton}
-            variant="contained"
             color="primary"
+            variant="contained"
+            className={this.props.classes.gridButton}
+            onClick={() => this.onBoxClick(i)}
           >
             {this.state.boxes[i] || ' '}
           </Button>
@@ -125,20 +121,20 @@ class Game extends PureComponent {
   render = () => {
     const { isRunning } = this.state;
     return (
-      <Grid container className={this.props.classes.mainContainer}>
+      <Grid style={{ marginTop: '10%' }}>
         <Grid container justify="center">
           <h2>{this.getTitle()}</h2>
         </Grid>
-        <Grid container>
+        <Grid>
           {this.gameRow([0, 1, 2])}
           {this.gameRow([3, 4, 5])}
           {this.gameRow([6, 7, 8])}
         </Grid>
         <Grid container justify="center" style={{ marginTop: '2%' }}>
           <Button
-            variant="contained"
-            color="primary"
             size="large"
+            color="primary"
+            variant="contained"
             onClick={isRunning ? this.onPlayBot : this.resetGame}
           >
             {isRunning ? 'Play bot' : 'Play Again?'}

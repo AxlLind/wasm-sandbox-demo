@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import request from 'superagent';
 import {
   Button,
-  Container,
   FormControl,
   Grid,
   InputLabel,
@@ -14,36 +13,30 @@ import {
 import UploadModal from './UploadModal';
 
 const useStyles = makeStyles(theme => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 200,
-  },
-  container: {
-    textAlign: 'center',
+  selector: {
     marginTop: '4%',
     marginBottom: '4%',
   },
   title: {
+    marginTop: '4%',
+    marginBottom: '4%',
     fontSize: '80px',
     color: theme.palette.primary.main,
   },
 }));
 
-function BotSelector({ title, options, value, onChange }) {
-  const classes = useStyles();
-  return (
-    <FormControl className={classes.formControl}>
-      <InputLabel>{title}</InputLabel>
-      <Select value={value} onChange={e => onChange(e.target.value)}>
-        {options.map(option => (
-          <MenuItem value={option} key={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-}
+const BotSelector = ({ title, options, value, onChange }) => (
+  <FormControl style={{ margin: 8, minWidth: 200 }}>
+    <InputLabel>{title}</InputLabel>
+    <Select value={value} onChange={e => onChange(e.target.value)}>
+      {options.map(option => (
+        <MenuItem value={option} key={option}>
+          {option}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+);
 
 function StartView() {
   const history = useHistory();
@@ -51,6 +44,7 @@ function StartView() {
   const [botOne, selectBotOne] = useState('');
   const [botTwo, selectBotTwo] = useState('');
   const [options, setOptions] = useState(['human']);
+  const onSubmit = () => history.push(`/play?x=${botOne}&o=${botTwo}`);
 
   useEffect(() => {
     request
@@ -61,11 +55,14 @@ function StartView() {
   }, []);
 
   return (
-    <Grid container style={{ marginTop: '5%' }}>
-      <Container maxWidth="md" className={classes.container}>
-        <div className={classes.title}>WASM Tic-Tac-Toe</div>
-      </Container>
-      <Container maxWidth="md" className={classes.container}>
+    <Grid container justify="center" style={{ marginTop: '5%' }}>
+      <Grid className={classes.title}>WASM Tic-Tac-Toe</Grid>
+      <Grid
+        container
+        justify="center"
+        alignItems="flex-end"
+        className={classes.selector}
+      >
         <BotSelector
           title="Bot One"
           value={botOne}
@@ -82,12 +79,11 @@ function StartView() {
           variant="contained"
           color="primary"
           size="large"
-          style={{ marginTop: '2%' }}
-          onClick={() => history.push(`/play?x=${botOne}&o=${botTwo}`)}
+          onClick={onSubmit}
         >
           Play The game
         </Button>
-      </Container>
+      </Grid>
       <UploadModal />
     </Grid>
   );

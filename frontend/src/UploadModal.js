@@ -3,7 +3,6 @@ import request from 'superagent';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import {
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,27 +11,23 @@ import {
   Fab,
   Grid,
   TextField,
-  makeStyles,
 } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    textAlign: 'center',
-    marginTop: '4%',
-    marginBottom: '4%',
-  },
-}));
-
 const DialogInstructions = () => (
-  <DialogContentText>
+  <DialogContentText component="div">
     To upload your own bot select your compiled WebAssembly file and give it a
     name! The requirements put on the file are the following:
-    <br />
-    <br />- It must be a valid <b>wasm</b> file.
-    <br />- It cannot import <b>any</b> external functions.
-    <br />- It must export a <b>single</b> function <i>'makeMove'</i>.
-    <br />
-    <br />
+    <ul>
+      <li>
+        It must be a valid <b>wasm</b> file.
+      </li>
+      <li>
+        It cannot import <b>any</b> external functions.
+      </li>
+      <li>
+        It must export a <b>single</b> function <i>'makeMove'</i>.
+      </li>
+    </ul>
     This function takes in the whole board as a single number. Every two bits
     from bit <b>0-17</b> represent one box of the board, with the upper left box
     in bits <b>0-1</b> and so on. A <b>0</b> value represents an empty board
@@ -65,7 +60,6 @@ const UploadModal = () => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');
-  const classes = useStyles();
   const input = useRef(null);
 
   const onClose = () => {
@@ -78,10 +72,10 @@ const UploadModal = () => {
   const onTextChange = e => setName(e.target.value);
 
   return (
-    <Container maxWidth="md" className={classes.container}>
+    <>
       <Fab
         variant="extended"
-        style={{ marginTop: '4%' }}
+        style={{ marginTop: '8%' }}
         onClick={() => setOpen(true)}
       >
         <NavigationIcon /> Upload Your Bot
@@ -90,7 +84,7 @@ const UploadModal = () => {
         <DialogTitle>Upload Your Bot</DialogTitle>
         <DialogContent>
           <DialogInstructions />
-          <Grid container alignItems="flex-end" spacing={1}>
+          <Grid container alignItems="flex-end" spacing={2}>
             <Grid item style={{ flexGrow: 1 }}>
               <TextField
                 fullWidth
@@ -101,8 +95,8 @@ const UploadModal = () => {
             </Grid>
             <Grid item>
               <Button
-                variant="contained"
                 color="primary"
+                variant="contained"
                 onClick={() => input.current.click()}
               >
                 {file ? file.name : 'Select File'}
@@ -112,15 +106,15 @@ const UploadModal = () => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="primary">
+          <Button color="primary" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={onSubmit} color="primary">
+          <Button color="primary" onClick={onSubmit}>
             Upload
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
+    </>
   );
 };
 
