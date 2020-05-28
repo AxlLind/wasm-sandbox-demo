@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import request from 'superagent';
 import {
   Button,
   FormControl,
@@ -11,7 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core/';
 import UploadModal from './UploadModal';
-import { backendUrl } from './config';
+import backend from './backend';
 
 const useStyles = makeStyles(theme => ({
   selector: {
@@ -48,9 +47,9 @@ function StartView() {
   const onSubmit = () => history.push(`/play?x=${botOne}&o=${botTwo}`);
 
   useEffect(() => {
-    request
-      .get(`${backendUrl}/bots`)
-      .then(res => res.body.map(({ name }) => name))
+    backend
+      .get('/bots')
+      .then(({ body }) => body.map(({ name }) => name))
       .then(options => setOptions(['human', ...options]))
       .catch(e => console.log(e));
   }, []);

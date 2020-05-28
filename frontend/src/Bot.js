@@ -1,6 +1,5 @@
 import { decode } from 'base64-arraybuffer';
-import request from 'superagent';
-import { backendUrl } from './config';
+import backend from './backend';
 
 class Bot {
   constructor(isX) {
@@ -27,10 +26,7 @@ class Bot {
   };
 
   static async fetch(name, isX) {
-    const res = await request
-      .post(`${backendUrl}/bots/get-by-name`)
-      .query({ name });
-
+    const res = await backend.post('/bots/get-by-name').query({ name });
     const base64 = res.body.base64_encoded_bot;
     const bytes = decode(base64);
     const { instance } = await WebAssembly.instantiate(bytes);

@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import request from 'superagent';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import {
   Button,
@@ -12,7 +11,7 @@ import {
   Grid,
   TextField,
 } from '@material-ui/core';
-import { backendUrl } from './config';
+import backend from './backend';
 
 const DialogInstructions = () => (
   <DialogContentText component="div">
@@ -47,10 +46,9 @@ const uploadBot = async (file, name, onSuccess) => {
     r.readAsDataURL(file);
     r.onload = () => resolve(r.result.split('base64,').pop());
   });
+  const body = { name, base64_encoded_bot: base64File };
   try {
-    await request
-      .post(`${backendUrl}/bots`)
-      .send({ name, base64_encoded_bot: base64File });
+    await backend.post('/bots').send(body);
     onSuccess();
   } catch (e) {
     console.error(e);
