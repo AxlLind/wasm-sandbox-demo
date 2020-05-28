@@ -12,6 +12,7 @@ import {
   Grid,
   TextField,
 } from '@material-ui/core';
+import { backendUrl } from './config';
 
 const DialogInstructions = () => (
   <DialogContentText component="div">
@@ -48,7 +49,7 @@ const uploadBot = async (file, name, onSuccess) => {
   });
   try {
     await request
-      .post('https://wasm-bots.herokuapp.com/bots')
+      .post(`${backendUrl}/bots`)
       .send({ name, base64_encoded_bot: base64File });
     onSuccess();
   } catch (e) {

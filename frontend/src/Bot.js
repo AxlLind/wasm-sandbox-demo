@@ -1,5 +1,6 @@
 import { decode } from 'base64-arraybuffer';
 import request from 'superagent';
+import { backendUrl } from './config';
 
 class Bot {
   constructor(isX) {
@@ -27,7 +28,7 @@ class Bot {
 
   static async fetch(name, isX) {
     const res = await request
-      .post(`https://wasm-bots.herokuapp.com/bots/get-by-name`)
+      .post(`${backendUrl}/bots/get-by-name`)
       .query({ name });
 
     const base64 = res.body.base64_encoded_bot;

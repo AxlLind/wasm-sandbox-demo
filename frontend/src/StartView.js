@@ -11,6 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core/';
 import UploadModal from './UploadModal';
+import { backendUrl } from './config';
 
 const useStyles = makeStyles(theme => ({
   selector: {
@@ -48,7 +49,7 @@ function StartView() {
 
   useEffect(() => {
     request
-      .get('https://wasm-bots.herokuapp.com/bots')
+      .get(`${backendUrl}/bots`)
       .then(res => res.body.map(({ name }) => name))
       .then(options => setOptions(['human', ...options]))
       .catch(e => console.log(e));
