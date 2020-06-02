@@ -12,9 +12,9 @@ This bot uses a [heuristic](https://en.wikipedia.org/wiki/Heuristic_(computer_sc
 See [heuristic.cpp](./heuristic.cpp).
 
 ## Optimal (Rust)
-This bot uses a variant of the famous [Minimax algorithm](https://en.wikipedia.org/wiki/Minimax), used to play zero-sum games. For larger games you would need to pair this with a heuristic but due to the small size of TicTacToe the bot is able to fully examine the search space. Due to how it represents the board memory allocations are fully eliminated, yielding incredible performance. It is able to do an exhaustive search from an empty board (which means looking at every possible TicTacToe board!) in less than 50ms in the browser.
+This bot uses a variant of the famous [Minimax algorithm](https://en.wikipedia.org/wiki/Minimax), used to play zero-sum games. For larger games you would need to pair this with a heuristic but due to the small size of TicTacToe the bot is able to fully examine the search space. It therefore only needs to look at leaf-nodes, i.e were one of the players has won. It also prioritizes winning early if possible. Due to how it represents the board memory allocations are fully eliminated, making it very performant. It is able to do an exhaustive search from an empty board (which means looking at every possible TicTacToe board!) in less than 50ms in the browser.
 
-See [optimal.cpp](./optimal.rs).
+See [optimal.rs](./optimal.rs).
 
 # Compiling these to WebAssembly
 You can of course set up the required toolchains locally for each language but considering the size of these files and that this is a demo we choose a simpler approach. We used a web application called [WebAssembly Studio](https://webassembly.studio/) to compile these programs. To use it create a new project for the corresponding language (i.e Rust or C) and replace the contents of the main file with the bot code.
